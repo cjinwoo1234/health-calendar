@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>건강 캘린더 체크리스트</title>
+  <meta name="description" content="매일의 수면, 수분, 식사, 운동, 기분을 기록하고 캘린더에서 흐름을 확인하는 건강 기록 도구" />
+  <meta name="theme-color" content="#4F8A7B" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%234F8A7B'/%3E%3Ctext x='50' y='66' font-size='58' text-anchor='middle' fill='white' font-family='sans-serif'%3E%E2%9C%93%3C/text%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main-content">본문으로 바로가기</a>
+
+  <div class="app">
+    <header class="app-header">
+      <div class="app-header__title">
+        <span class="app-header__logo" aria-hidden="true">🌿</span>
+        <h1>건강 캘린더</h1>
+      </div>
+      <button type="button" id="today-btn" class="btn btn--ghost">오늘로 이동</button>
+    </header>
+
+    <main id="main-content">
+      <section class="card summary-card" aria-labelledby="summary-heading">
+        <h2 id="summary-heading" class="sr-only">오늘의 요약</h2>
+        <div class="summary-grid">
+          <div class="summary-item">
+            <span class="summary-item__label">선택 날짜</span>
+            <span class="summary-item__value" id="selected-date-label">-</span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-item__label">오늘 완료율</span>
+            <span class="summary-item__value" id="today-rate-label">0%</span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-item__label">현재 연속 기록</span>
+            <span class="summary-item__value"><span id="streak-label">0</span>일</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="card calendar-card" aria-labelledby="calendar-heading">
+        <div class="calendar-header">
+          <button type="button" id="prev-month-btn" class="icon-btn" aria-label="이전 달로 이동">
+            <span aria-hidden="true">‹</span>
+          </button>
+          <h2 id="calendar-heading" aria-live="polite">2026년 9월</h2>
+          <button type="button" id="next-month-btn" class="icon-btn" aria-label="다음 달로 이동">
+            <span aria-hidden="true">›</span>
+          </button>
+        </div>
+
+        <div class="weekday-row" role="row" aria-hidden="true">
+          <span>일</span><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span>
+        </div>
+
+        <div class="calendar-grid" id="calendar-grid"></div>
+
+        <p class="calendar-legend">
+          <span class="legend-dot" aria-hidden="true"></span>
+          기록이 있는 날짜
+        </p>
+      </section>
+
+      <section class="card checklist-card" aria-labelledby="checklist-heading">
+        <div class="checklist-card__header">
+          <h2 id="checklist-heading"><span id="checklist-date-label">오늘</span>의 기록</h2>
+          <span class="rate-badge" id="selected-rate-badge">0%</span>
+        </div>
+
+        <p class="empty-hint" id="empty-hint" hidden>
+          아직 이 날짜의 기록이 없어요. 오늘의 상태를 가볍게 기록해보세요.
+        </p>
+
+        <form id="checklist-form" novalidate>
+          <fieldset class="check-group">
+            <legend>체크리스트</legend>
+            <label class="check-item">
+              <input type="checkbox" id="check-sleep" name="sleep" />
+              <span class="check-item__box" aria-hidden="true"></span>
+              <span class="check-item__text">수면 7시간 이상</span>
+            </label>
+            <label class="check-item">
+              <input type="checkbox" id="check-water" name="water" />
+              <span class="check-item__box" aria-hidden="true"></span>
+              <span class="check-item__text">물 6잔 이상</span>
+            </label>
+            <label class="check-item">
+              <input type="checkbox" id="check-meal" name="meal" />
+              <span class="check-item__box" aria-hidden="true"></span>
+              <span class="check-item__text">균형 잡힌 식사</span>
+            </label>
+            <label class="check-item">
+              <input type="checkbox" id="check-exercise" name="exercise" />
+              <span class="check-item__box" aria-hidden="true"></span>
+              <span class="check-item__text">20분 이상 움직임</span>
+            </label>
+          </fieldset>
+
+          <fieldset class="check-group symptom-group">
+            <legend>몸 상태</legend>
+            <label class="check-item">
+              <input type="checkbox" id="check-numbness" name="numbness" />
+              <span class="check-item__box" aria-hidden="true"></span>
+              <span class="check-item__text">손 저림 또는 힘 빠짐</span>
+            </label>
+            <p class="symptom-hint">
+              참고 기록용이며 진단이 아니에요. 증상이 심하거나 갑자기 나타났다면 병원 진료를 받아보세요.
+            </p>
+          </fieldset>
+
+          <fieldset class="mood-group">
+            <legend>오늘 기분</legend>
+            <div class="mood-options">
+              <label class="mood-item mood-item--good">
+                <input type="radio" name="mood" value="good" />
+                <span class="mood-item__emoji" aria-hidden="true">🙂</span>
+                <span>좋음</span>
+              </label>
+              <label class="mood-item mood-item--normal">
+                <input type="radio" name="mood" value="normal" />
+                <span class="mood-item__emoji" aria-hidden="true">😐</span>
+                <span>보통</span>
+              </label>
+              <label class="mood-item mood-item--hard">
+                <input type="radio" name="mood" value="hard" />
+                <span class="mood-item__emoji" aria-hidden="true">😣</span>
+                <span>힘듦</span>
+              </label>
+            </div>
+          </fieldset>
+
+          <div class="field">
+            <label for="note-input">컨디션 메모</label>
+            <textarea id="note-input" name="note" rows="3" maxlength="300" placeholder="오늘의 컨디션이나 특이사항을 자유롭게 적어보세요"></textarea>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn btn--primary">저장</button>
+            <button type="button" id="clear-record-btn" class="btn btn--danger-ghost" hidden>이 날 기록 지우기</button>
+          </div>
+
+          <p id="save-status" class="save-status" role="status" aria-live="polite"></p>
+        </form>
+      </section>
+    </main>
+
+    <footer class="app-footer">
+      <p>기록은 이 기기에만 저장되며 의료 조언이 아닙니다.</p>
+      <p>이 앱은 건강 기록을 돕는 도구이며 의료 진단이나 응급 판단을 대신하지 않습니다.</p>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

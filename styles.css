@@ -1,0 +1,636 @@
+/* ==========================================================================
+   건강 캘린더 체크리스트 — 스타일시트
+   따뜻하고 차분한 건강관리 톤, 모바일 우선 반응형
+   ========================================================================== */
+
+:root {
+  --color-bg: #faf6f0;
+  --color-surface: #ffffff;
+  --color-surface-alt: #f3ede2;
+  --color-border: #e6ddcd;
+  --color-text: #2f3b36;
+  --color-text-muted: #6b7a75;
+  --color-text-faint: #96a19a;
+
+  --color-primary: #4f8a7b;
+  --color-primary-dark: #386657;
+  --color-primary-light: #e4f0ea;
+
+  --color-good: #6fae7f;
+  --color-good-bg: #e6f3e9;
+  --color-normal: #d9a441;
+  --color-normal-bg: #faf0dc;
+  --color-hard: #d97e6c;
+  --color-hard-bg: #fbe9e4;
+
+  --color-danger: #c0604f;
+
+  --shadow-card: 0 2px 10px rgba(47, 59, 54, 0.06), 0 1px 2px rgba(47, 59, 54, 0.04);
+  --radius-lg: 20px;
+  --radius-md: 14px;
+  --radius-sm: 10px;
+
+  --focus-ring: 0 0 0 3px rgba(79, 138, 123, 0.35);
+
+  font-size: 16px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: "Pretendard", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo",
+    "Malgun Gothic", "Noto Sans KR", system-ui, sans-serif;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+p {
+  margin: 0;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+textarea,
+input {
+  font-family: inherit;
+  font-size: 1rem;
+}
+
+/* 접근성: 스크린리더 전용 텍스트 */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  background: var(--color-primary-dark);
+  color: #fff;
+  padding: 10px 16px;
+  border-radius: 0 0 8px 0;
+  z-index: 100;
+  text-decoration: none;
+}
+
+.skip-link:focus {
+  left: 0;
+}
+
+/* 포커스 표시 — 키보드 사용자를 위해 명확하게 */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+  border-radius: 8px;
+}
+
+/* ==========================================================================
+   레이아웃
+   ========================================================================== */
+
+.app {
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 20px 16px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 2px 8px;
+}
+
+.app-header__title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.app-header__logo {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.app-header h1 {
+  font-size: 1.3rem;
+  letter-spacing: -0.02em;
+}
+
+.card {
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: 18px;
+  border: 1px solid var(--color-border);
+}
+
+/* ==========================================================================
+   버튼 공통
+   ========================================================================== */
+
+.btn {
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 10px 16px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  transition: background-color 0.15s ease, transform 0.1s ease;
+  min-height: 40px;
+}
+
+.btn:active {
+  transform: scale(0.97);
+}
+
+.btn--primary {
+  background: var(--color-primary);
+  color: #fff;
+  width: 100%;
+  font-size: 1rem;
+  min-height: 48px;
+}
+
+.btn--primary:hover {
+  background: var(--color-primary-dark);
+}
+
+.btn--ghost {
+  background: var(--color-primary-light);
+  color: var(--color-primary-dark);
+}
+
+.btn--ghost:hover {
+  background: #d7ebe1;
+}
+
+.btn--danger-ghost {
+  background: transparent;
+  color: var(--color-danger);
+  border: 1px solid #ecd1ca;
+  width: 100%;
+}
+
+.btn--danger-ghost:hover {
+  background: #fbe9e4;
+}
+
+.icon-btn {
+  background: var(--color-surface-alt);
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  color: var(--color-primary-dark);
+  flex-shrink: 0;
+}
+
+.icon-btn:hover {
+  background: var(--color-primary-light);
+}
+
+/* ==========================================================================
+   요약 카드
+   ========================================================================== */
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  text-align: center;
+}
+
+.summary-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 6px 4px;
+}
+
+.summary-item__label {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+
+.summary-item__value {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--color-primary-dark);
+  word-break: keep-all;
+}
+
+/* ==========================================================================
+   캘린더
+   ========================================================================== */
+
+.calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.calendar-header h2 {
+  font-size: 1.05rem;
+}
+
+.weekday-row {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  font-size: 0.78rem;
+  color: var(--color-text-faint);
+  margin-bottom: 6px;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.day-cell {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  min-height: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  color: var(--color-text);
+  font-size: 0.88rem;
+}
+
+.day-cell:hover {
+  background: var(--color-surface-alt);
+}
+
+.day-cell--muted {
+  color: var(--color-text-faint);
+}
+
+.day-cell--today {
+  border-color: var(--color-primary);
+  font-weight: 700;
+  color: var(--color-primary-dark);
+}
+
+.day-cell--selected {
+  background: var(--color-primary);
+  color: #fff;
+  font-weight: 700;
+}
+
+.day-cell--selected:hover {
+  background: var(--color-primary-dark);
+}
+
+.day-cell--selected.day-cell--today {
+  border-color: var(--color-primary-dark);
+}
+
+.day-cell__dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  opacity: 0;
+}
+
+.day-cell--has-record .day-cell__dot {
+  opacity: 1;
+}
+
+.day-cell--selected .day-cell__dot {
+  background: #fff;
+}
+
+.calendar-legend {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 12px;
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+}
+
+.legend-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  display: inline-block;
+}
+
+/* ==========================================================================
+   체크리스트 카드
+   ========================================================================== */
+
+.checklist-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.checklist-card__header h2 {
+  font-size: 1.05rem;
+}
+
+.rate-badge {
+  background: var(--color-primary-light);
+  color: var(--color-primary-dark);
+  font-weight: 700;
+  font-size: 0.85rem;
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+
+.empty-hint {
+  background: var(--color-surface-alt);
+  color: var(--color-text-muted);
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  margin-bottom: 14px;
+}
+
+fieldset {
+  border: none;
+  padding: 0;
+  margin: 0 0 16px;
+}
+
+legend {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  padding: 0 0 8px;
+}
+
+.check-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.check-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 4px;
+  border-bottom: 1px solid var(--color-border);
+  cursor: pointer;
+}
+
+.check-item:last-child {
+  border-bottom: none;
+}
+
+.check-item input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+
+.check-item__box {
+  width: 24px;
+  height: 24px;
+  border-radius: 7px;
+  border: 2px solid var(--color-border);
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.check-item__box::after {
+  content: "";
+  width: 7px;
+  height: 12px;
+  border-right: 2.5px solid #fff;
+  border-bottom: 2.5px solid #fff;
+  transform: rotate(45deg) translate(-1px, -1px);
+  opacity: 0;
+}
+
+.check-item input[type="checkbox"]:checked + .check-item__box {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.check-item input[type="checkbox"]:checked + .check-item__box::after {
+  opacity: 1;
+}
+
+.check-item input[type="checkbox"]:focus-visible + .check-item__box {
+  box-shadow: var(--focus-ring);
+}
+
+.check-item__text {
+  font-size: 0.95rem;
+}
+
+.symptom-hint {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  margin-top: 8px;
+  line-height: 1.45;
+}
+
+.mood-options {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.mood-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 10px 4px;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--color-border);
+  cursor: pointer;
+  font-size: 0.82rem;
+  color: var(--color-text-muted);
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.mood-item input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+
+.mood-item__emoji {
+  font-size: 1.4rem;
+  line-height: 1;
+}
+
+.mood-item input:focus-visible ~ .mood-item__emoji {
+  box-shadow: var(--focus-ring);
+  border-radius: 50%;
+}
+
+.mood-item--good input:checked ~ * {
+  color: var(--color-good);
+}
+.mood-item--good:has(input:checked) {
+  background: var(--color-good-bg);
+  border-color: var(--color-good);
+  color: var(--color-good);
+}
+
+.mood-item--normal:has(input:checked) {
+  background: var(--color-normal-bg);
+  border-color: var(--color-normal);
+  color: var(--color-normal);
+}
+
+.mood-item--hard:has(input:checked) {
+  background: var(--color-hard-bg);
+  border-color: var(--color-hard);
+  color: var(--color-hard);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.field label {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--color-text-muted);
+}
+
+.field textarea {
+  resize: vertical;
+  min-height: 72px;
+  padding: 10px 12px;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+.field textarea::placeholder {
+  color: var(--color-text-faint);
+}
+
+.form-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.save-status {
+  min-height: 1.2em;
+  margin-top: 10px;
+  font-size: 0.85rem;
+  color: var(--color-primary-dark);
+  font-weight: 600;
+  text-align: center;
+}
+
+.save-status--error {
+  color: var(--color-danger);
+}
+
+/* ==========================================================================
+   푸터 — 의료 면책 문구
+   ========================================================================== */
+
+.app-footer {
+  text-align: center;
+  padding: 8px 12px 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.app-footer p {
+  font-size: 0.76rem;
+  color: var(--color-text-faint);
+  line-height: 1.5;
+}
+
+/* ==========================================================================
+   반응형 — 태블릿/데스크톱
+   ========================================================================== */
+
+@media (min-width: 640px) {
+  .app {
+    max-width: 600px;
+    padding-top: 32px;
+  }
+
+  .card {
+    padding: 24px;
+  }
+
+  .day-cell {
+    min-height: 46px;
+  }
+}
+
+/* ==========================================================================
+   축소 모션 선호 사용자 배려
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+  }
+}
