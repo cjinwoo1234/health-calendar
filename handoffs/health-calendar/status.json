@@ -4,6 +4,6 @@
   "status": "updated",
   "qa_cycles_completed": 1,
   "blocking_decisions": [],
-  "next_action": "claude-followup-notes.md 확인: 몸 상태(증상) 체크 항목 + 발생 시각/지속 시간 입력 추가, [hidden] CSS 버그 수정, 320px 반응형 보강. 실제 모바일 기기에서 사용자 재확인 예정 — 추가 리포트 시 대응 필요.",
-  "updated_at": "2026-09-11T22:05:00+09:00"
+  "next_action": "claude-followup-notes.md 5번 섹션 확인: 지속 시간 선택지를 초 단위(30초/1분/2분/3분/3분 이상)로 변경, 발생 시각 입력을 시/분 select + '지금' 버튼으로 교체(저장 스키마는 HH:MM 그대로). 실제 모바일 기기 재확인은 사용자 진행 중.",
+  "updated_at": "2026-09-11T22:20:00+09:00"
 }

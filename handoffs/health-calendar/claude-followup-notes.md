@@ -9,11 +9,9 @@
 - `hasContent`(기록 존재 여부/캘린더 점 표시 판정)에는 포함.
 - 진단처럼 보이지 않도록 힌트 문구 추가: "참고 기록용이며 진단이 아니에요. 증상이 심하거나 갑자기 나타났다면 병원 진료를 받아보세요."
 
-## 2. 증상 체크 시 발생 시각 / 지속 시간 입력 추가
+## 2. 증상 체크 시 발생 시각 / 지속 시간 입력 추가 (이후 5번에서 UI 변경됨)
 
-- 체크박스가 체크된 경우에만 `#numbness-detail` 블록이 나타나며 다음을 입력받는다.
-  - 발생 시각: `<input type="time" id="numbness-time">` → `record.numbnessTime` ("HH:MM")
-  - 지속 시간: `<select id="numbness-duration">` → `record.numbnessDuration` (`under5`/`5to30`/`30to60`/`over60`/`ongoing`)
+- 체크박스가 체크된 경우에만 `#numbness-detail` 블록이 나타나며 발생 시각·지속 시간을 입력받는다 → `record.numbnessTime`("HH:MM"), `record.numbnessDuration`.
 - 체크 해제 시 두 값은 빈 문자열로 저장해 이전 값이 남지 않게 처리(`onFormSubmit`).
 - 저장/새로고침 복원 및 체크 해제 시 필드 숨김 동작을 Chrome에서 직접 검증함.
 
@@ -30,7 +28,16 @@
 - `@media (max-width: 359px)` 블록 신설: `.app` 패딩/`.card` 패딩/`.calendar-grid` gap/`.day-cell` 최소높이·폰트를 더 촘촘하게 줄여 320px 기기에서 여유 확보.
 - 참고: 이 세션에서 사용한 브라우저 자동화 도구(`resize_window`)가 실제 뷰포트(`window.innerWidth`)를 바꾸지 못해 `min-width:640px` 미디어쿼리 이하 구간을 라이브로 완전히 재현·검증하지 못했다. 사용자가 실제 폰에서 재확인 예정이며, 여전히 문제가 있으면 스크린샷과 함께 다시 리포트받아 추가 조치 필요.
 
+## 5. 지속 시간 선택지 변경 + 발생 시각 입력 UI 개선 — 2026-09-11 추가
+
+- 지속 시간(`#numbness-duration`) 옵션을 사용자 요청으로 초 단위로 세분화: `30s`(30초) / `1m`(1분) / `2m`(2분) / `3m`(3분) / `over3m`(3분 이상). 기존 `under5`/`5to30`/`30to60`/`over60`/`ongoing` 값은 더 이상 쓰지 않는다 — **과거에 저장된 레코드에 옛 값이 남아있어도 그대로 문자열로 표시될 뿐 에러는 나지 않지만, select에는 해당 옵션이 없어 빈 값처럼 보인다.** 기존 데이터 마이그레이션은 하지 않았다(사용자 브라우저 로컬 데이터라 영향 범위가 작다고 판단).
+- 발생 시각 입력을 네이티브 `<input type="time">`에서 **시(0~23)/분(5분 단위) `<select>` 두 개 + "지금" 버튼**으로 교체(사용자가 "선택하기 더 쉽게" 요청).
+  - `#numbness-hour`(`name="numbnessHour"`), `#numbness-minute`(`name="numbnessMinute"`)로 분리, `app.js`의 `joinTime()`/`splitTime()`으로 `record.numbnessTime`("HH:MM") 포맷은 그대로 유지 — 저장 스키마 변경 없음.
+  - "지금" 버튼(`#numbness-now-btn`)은 현재 시각을 5분 단위로 반올림해 두 select에 채운다(`setNumbnessTimeToNow()`).
+  - 분 옵션 스텝은 `app.js`의 `MINUTE_STEP = 5` 상수로 관리.
+- Chrome에서 체크 → 지금 클릭 → 저장 → 새로고침 → 체크 해제까지 전 과정 재검증 완료.
+
 ## 배포 상태
 
 - GitHub 리포지토리: https://github.com/cjinwoo1234/health-calendar (public)
-- GitHub Pages: https://cjinwoo1234.github.io/health-calendar/ (위 변경사항 모두 push 및 배포 완료)
+- GitHub Pages: https://cjinwoo1234.github.io/health-calendar/ (커밋 `fa3896f`까지 반영, push 및 배포 완료)
