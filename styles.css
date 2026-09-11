@@ -278,6 +278,7 @@ textarea:focus-visible,
 .weekday-row {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
   text-align: center;
   font-size: 0.78rem;
   color: var(--color-text-faint);
