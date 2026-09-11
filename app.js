@@ -118,6 +118,11 @@
     noteInput: document.getElementById("note-input"),
     clearBtn: document.getElementById("clear-record-btn"),
     saveStatus: document.getElementById("save-status"),
+
+    numbnessCheckbox: document.getElementById("check-numbness"),
+    numbnessDetail: document.getElementById("numbness-detail"),
+    numbnessTimeInput: document.getElementById("numbness-time"),
+    numbnessDurationSelect: document.getElementById("numbness-duration"),
   };
 
   // ------------------------------------------------------------------
@@ -320,8 +325,10 @@
       input.checked = !!(record && record.mood === input.value);
     });
 
-    var numbnessInput = document.getElementById("check-numbness");
-    numbnessInput.checked = !!(record && record.numbness);
+    els.numbnessCheckbox.checked = !!(record && record.numbness);
+    els.numbnessTimeInput.value = (record && record.numbnessTime) || "";
+    els.numbnessDurationSelect.value = (record && record.numbnessDuration) || "";
+    updateNumbnessDetailVisibility();
 
     els.noteInput.value = (record && record.note) || "";
 
@@ -336,6 +343,11 @@
     els.saveStatus.textContent = "";
   }
 
+  /** 손 저림/힘 빠짐 체크 여부에 따라 발생 시각·지속 시간 입력을 표시/숨김 */
+  function updateNumbnessDetailVisibility() {
+    els.numbnessDetail.hidden = !els.numbnessCheckbox.checked;
+  }
+
   // ------------------------------------------------------------------
   // 저장 / 수정 / 삭제
   // ------------------------------------------------------------------
@@ -344,13 +356,17 @@
     evt.preventDefault();
 
     var formData = new FormData(els.form);
+    var numbnessChecked = formData.get("numbness") === "on";
     var newRecord = {
       sleep: formData.get("sleep") === "on",
       water: formData.get("water") === "on",
       meal: formData.get("meal") === "on",
       exercise: formData.get("exercise") === "on",
       mood: formData.get("mood") || null,
-      numbness: formData.get("numbness") === "on",
+      numbness: numbnessChecked,
+      // 체크 해제 시에는 발생 시각·지속 시간도 함께 비워 오래된 값이 남지 않게 한다
+      numbnessTime: numbnessChecked ? (formData.get("numbnessTime") || "") : "",
+      numbnessDuration: numbnessChecked ? (formData.get("numbnessDuration") || "") : "",
       note: (formData.get("note") || "").toString().trim(),
       updatedAt: new Date().toISOString(),
     };
@@ -419,6 +435,7 @@
     els.todayBtn.addEventListener("click", goToToday);
     els.form.addEventListener("submit", onFormSubmit);
     els.clearBtn.addEventListener("click", onClearRecord);
+    els.numbnessCheckbox.addEventListener("change", updateNumbnessDetailVisibility);
 
     renderCalendar();
     renderSummary();

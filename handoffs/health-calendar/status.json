@@ -1,9 +1,9 @@
 {
   "last_actor": "claude",
-  "next_actor": "user",
-  "status": "completed",
+  "next_actor": "codex",
+  "status": "updated",
   "qa_cycles_completed": 1,
   "blocking_decisions": [],
-  "next_action": "구현·검증 완료. 사용자 요청으로 '손 저림/힘 빠짐' 증상 체크 항목을 체크리스트와 별도로 추가함(완료율 계산에는 미포함). index.html을 열어 사용.",
-  "updated_at": "2026-09-11T21:22:00+09:00"
+  "next_action": "claude-followup-notes.md 확인: 몸 상태(증상) 체크 항목 + 발생 시각/지속 시간 입력 추가, [hidden] CSS 버그 수정, 320px 반응형 보강. 실제 모바일 기기에서 사용자 재확인 예정 — 추가 리포트 시 대응 필요.",
+  "updated_at": "2026-09-11T22:05:00+09:00"
 }
