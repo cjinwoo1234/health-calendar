@@ -107,9 +107,15 @@
             </label>
 
             <div class="symptom-detail" id="numbness-detail" hidden>
-              <div class="symptom-detail__field">
-                <label for="numbness-time">발생 시각</label>
-                <input type="time" id="numbness-time" name="numbnessTime" />
+              <div class="symptom-detail__field symptom-detail__field--time">
+                <label id="numbness-time-label">발생 시각</label>
+                <div class="time-select-row" role="group" aria-labelledby="numbness-time-label">
+                  <select id="numbness-hour" name="numbnessHour" aria-label="발생 시각 - 시"></select>
+                  <span class="time-select-unit">시</span>
+                  <select id="numbness-minute" name="numbnessMinute" aria-label="발생 시각 - 분"></select>
+                  <span class="time-select-unit">분</span>
+                  <button type="button" id="numbness-now-btn" class="btn btn--ghost btn--small">지금</button>
+                </div>
               </div>
               <div class="symptom-detail__field">
                 <label for="numbness-duration">지속 시간</label>

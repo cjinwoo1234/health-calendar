@@ -121,9 +121,69 @@
 
     numbnessCheckbox: document.getElementById("check-numbness"),
     numbnessDetail: document.getElementById("numbness-detail"),
-    numbnessTimeInput: document.getElementById("numbness-time"),
+    numbnessHourSelect: document.getElementById("numbness-hour"),
+    numbnessMinuteSelect: document.getElementById("numbness-minute"),
+    numbnessNowBtn: document.getElementById("numbness-now-btn"),
     numbnessDurationSelect: document.getElementById("numbness-duration"),
   };
+
+  // 발생 시각 선택지 채우기 — 시(0~23), 분(5분 단위)를 드롭다운으로 제공해
+  // 네이티브 time input의 좁은 스피너보다 손가락으로 고르기 쉽게 한다.
+  var MINUTE_STEP = 5;
+
+  function populateTimeSelectOptions() {
+    var hourFrag = document.createDocumentFragment();
+    var blankHour = document.createElement("option");
+    blankHour.value = "";
+    blankHour.textContent = "-";
+    hourFrag.appendChild(blankHour);
+    for (var h = 0; h < 24; h++) {
+      var hourOpt = document.createElement("option");
+      hourOpt.value = pad2(h);
+      hourOpt.textContent = String(h);
+      hourFrag.appendChild(hourOpt);
+    }
+    els.numbnessHourSelect.appendChild(hourFrag);
+
+    var minuteFrag = document.createDocumentFragment();
+    var blankMinute = document.createElement("option");
+    blankMinute.value = "";
+    blankMinute.textContent = "-";
+    minuteFrag.appendChild(blankMinute);
+    for (var m = 0; m < 60; m += MINUTE_STEP) {
+      var minuteOpt = document.createElement("option");
+      minuteOpt.value = pad2(m);
+      minuteOpt.textContent = pad2(m);
+      minuteFrag.appendChild(minuteOpt);
+    }
+    els.numbnessMinuteSelect.appendChild(minuteFrag);
+  }
+
+  /** "HH:MM" -> { hour, minute } select 값. 분은 MINUTE_STEP 단위로 반올림한다. */
+  function splitTime(timeStr) {
+    if (!timeStr || timeStr.indexOf(":") === -1) {
+      return { hour: "", minute: "" };
+    }
+    var parts = timeStr.split(":");
+    var hour = parts[0];
+    var minuteNum = Math.round(Number(parts[1]) / MINUTE_STEP) * MINUTE_STEP;
+    if (minuteNum >= 60) minuteNum = 55;
+    return { hour: hour, minute: pad2(minuteNum) };
+  }
+
+  /** 시/분 select 값을 합쳐 "HH:MM" 문자열로. 둘 중 하나라도 비어 있으면 빈 문자열. */
+  function joinTime(hour, minute) {
+    if (!hour || !minute) return "";
+    return hour + ":" + minute;
+  }
+
+  function setNumbnessTimeToNow() {
+    var now = new Date();
+    els.numbnessHourSelect.value = pad2(now.getHours());
+    var roundedMinute = Math.round(now.getMinutes() / MINUTE_STEP) * MINUTE_STEP;
+    if (roundedMinute >= 60) roundedMinute = 55;
+    els.numbnessMinuteSelect.value = pad2(roundedMinute);
+  }
 
   // ------------------------------------------------------------------
   // 기록 관련 계산
@@ -326,7 +386,9 @@
     });
 
     els.numbnessCheckbox.checked = !!(record && record.numbness);
-    els.numbnessTimeInput.value = (record && record.numbnessTime) || "";
+    var timeParts = splitTime(record && record.numbnessTime);
+    els.numbnessHourSelect.value = timeParts.hour;
+    els.numbnessMinuteSelect.value = timeParts.minute;
     els.numbnessDurationSelect.value = (record && record.numbnessDuration) || "";
     updateNumbnessDetailVisibility();
 
@@ -365,7 +427,9 @@
       mood: formData.get("mood") || null,
       numbness: numbnessChecked,
       // 체크 해제 시에는 발생 시각·지속 시간도 함께 비워 오래된 값이 남지 않게 한다
-      numbnessTime: numbnessChecked ? (formData.get("numbnessTime") || "") : "",
+      numbnessTime: numbnessChecked
+        ? joinTime(formData.get("numbnessHour"), formData.get("numbnessMinute"))
+        : "",
       numbnessDuration: numbnessChecked ? (formData.get("numbnessDuration") || "") : "",
       note: (formData.get("note") || "").toString().trim(),
       updatedAt: new Date().toISOString(),
@@ -436,7 +500,9 @@
     els.form.addEventListener("submit", onFormSubmit);
     els.clearBtn.addEventListener("click", onClearRecord);
     els.numbnessCheckbox.addEventListener("change", updateNumbnessDetailVisibility);
+    els.numbnessNowBtn.addEventListener("click", setNumbnessTimeToNow);
 
+    populateTimeSelectOptions();
     renderCalendar();
     renderSummary();
     renderChecklistForm();
